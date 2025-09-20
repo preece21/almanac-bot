@@ -1,9 +1,24 @@
 import discord
+import os
+import json
 from discord.ext import commands
+
+DATA_FILE = 'channels.json'
+
+def load_output_channels():
+    if not os.path.exists(DATA_FILE):
+        return {}
+    with open(DATA_FILE, 'r') as f:
+        return json.load(f)
+
+def save_output_channels(data):
+    with open(DATA_FILE, 'w') as f:
+        json.dump(data, f, indent=4)
 
 class Calendar(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.output_channels = load_output_channels()
 
     @commands.group(name='calendar', help='Calendar command group')
     async def calendar(self, ctx):
@@ -39,6 +54,20 @@ class Calendar(commands.Cog):
         embed = discord.Embed(
             title="✅ Calendar Registered",
             description="You have successfully registered your calendar.",
+            color=discord.Color.blue()
+        )
+        await ctx.send(embed=embed)
+
+    @calendar.command(name='set_output', help='Sets Output Channel')
+    async def calendar_register(self, ctx, channel: discord.TextChannel):
+        
+        guild_id = str(ctx.guild.id)
+        self.output_channels[guild_id] = channel.id
+        save_output_channels(self.output_channels)
+        
+        embed = discord.Embed(
+            title="✅ Calendar Registered",
+            description=f"✅ Output channel set to {channel.mention}",
             color=discord.Color.blue()
         )
         await ctx.send(embed=embed)
