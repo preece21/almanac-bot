@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MY_SECRET_KEY: ${{ secrets.DISCORD_TOKEN }}
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
 
     steps:
       - name: Checkout code
