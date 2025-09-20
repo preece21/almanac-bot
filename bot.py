@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN') # Gets token from .env file
+TOKEN = os.getenv("DISCORD_TOKEN") # Gets token from .env file
 
 intents = discord.Intents.all() # Intents give the bot various permissions in discord (Currently set to all)
 
