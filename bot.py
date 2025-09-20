@@ -1,7 +1,9 @@
 import os
 import discord
+import asyncio
 from dotenv import load_dotenv
 from discord.ext import commands
+from datetime import timedelta, datetime
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN") # Gets token from .env file
@@ -15,11 +17,15 @@ bot = commands.Bot(command_prefix='!', intents=intents) # Create the bot object,
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!') # Prints to terminal that the bot is connected
 
-# Load cogs on startup
-@bot.event
-async def setup_hook():
-    await bot.load_extension('cogs.calendar')
 
-bot.run(TOKEN)
+
+async def main():
+    async with bot:
+        await bot.load_extension("cogs.calendar")  # Load the cog
+        await bot.start(TOKEN)
+
+asyncio.run(main())
+
+
 
 
